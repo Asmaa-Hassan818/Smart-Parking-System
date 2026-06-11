@@ -1,8 +1,9 @@
+
 class Ticket:
     def __init__(self,ticket_id,vehicle,slot_id,entry_time):
         self.ticket_id = ticket_id
         self.vehicle = vehicle
-        self.solt_id = slot_id
+        self.slot_id = slot_id
         self.entry_time = entry_time
         self.exit_time = None
         self.duration = 0
