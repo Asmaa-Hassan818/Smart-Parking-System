@@ -4,11 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3cb5a617-e4fe-4fb2-b21f-e30bdddeb351" name="Changes" comment="">
+    <list default="true" id="3cb5a617-e4fe-4fb2-b21f-e30bdddeb351" name="Changes" comment="updatesss">
+      <change afterPath="$PROJECT_DIR$/models/SubscriberManager.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/customer.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/customer.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/parking_lot.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/parking_lot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/parking_slot.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/parking_slot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/ticket.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/ticket.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/regular_customer.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/regular_customer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/subscriber_customer.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/subscriber_customer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/user.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,6 +74,19 @@
       <option name="presentableId" value="Default" />
       <updated>1781111364958</updated>
     </task>
+    <task id="LOCAL-00001" summary="updatesss">
+      <option name="closed" value="true" />
+      <created>1781199659678</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1781199659678</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="updatesss" />
+    <option name="LAST_COMMIT_MESSAGE" value="updatesss" />
   </component>
 </project>
