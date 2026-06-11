@@ -19,17 +19,14 @@ class ParkingLot:
                 return slot
         return None
 
-    def check_plate_number(self, plate_number):
+    def check_plate_number(self, plate_num):
         for ticket in self.parked_vehicles.values():
-            if ticket.vehicle.plate_num == plate_number:
+            if ticket.vehicle.plate_num == plate_num:
                 return True
         return False
 
     def create_ticket(self, vehicle, slot_id, entry_time):
-        if Ticket.is_subscriber:
-            return None
-        else:
-            ticket_id = "T" + str(len(self.parked_vehicles) + 1000)
+        ticket_id = "T" + str(len(self.parked_vehicles) + 1000)
 
         return Ticket(
             ticket_id=ticket_id,
@@ -40,7 +37,7 @@ class ParkingLot:
 
     def assign_vehicle(self, vehicle, entry_time , is_subscriber = False):
 
-        if self.check_plate_number(vehicle.plate_number):
+        if self.check_plate_number(vehicle.plate_num):
             return "Vehicle already parked"
 
         slot = self.find_ava_slot()

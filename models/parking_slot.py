@@ -8,7 +8,7 @@ class ParkingSlot:
         self.vehicle = vehicle
         self.is_occupied = True
 
-    def remove_vehicle(self,vehicle):
+    def remove_vehicle(self):
         self.vehicle = None
         self.is_occupied = False
     def display_info(self):

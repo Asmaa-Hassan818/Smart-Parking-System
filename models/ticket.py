@@ -22,7 +22,7 @@ class Ticket:
         return f"""
     Ticket Info:
     Ticket ID : {self.ticket_id}
-    Vehicle   : {self.vehicle.plate_number}
+    Vehicle   : {self.vehicle.plate_num}
     Slot      : {self.slot_id}
     Entry     : {self.entry_time}
     Exit      : {self.exit_time}
