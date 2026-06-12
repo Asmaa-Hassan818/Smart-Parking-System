@@ -1,9 +1,15 @@
 from models.user import User
 
+
 class Admin(User):
-    def __init__(self,admin_id,user_id, name ,subscriber_manager, parking_lot):
+    VALID_ADMINS = {
+        "ADM001": "Asmaa",
+        "ADM002": "Sara",
+        "ADM003": "Ahmed"
+    }
+
+    def __init__(self, user_id, name, subscriber_manager, parking_lot):
         super().__init__(user_id, name)
-        self.admin_id = admin_id
         self.subscriber_manager = subscriber_manager
         self.parking_lot = parking_lot
 
@@ -35,6 +41,3 @@ class Admin(User):
             "View Waiting Queue",
             "Manage Subscribers"
         ]
-
-
-

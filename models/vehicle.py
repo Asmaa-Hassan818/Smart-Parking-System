@@ -8,7 +8,7 @@ class vehicle:
         return f"""
         Vehicle Info:
        
-        Plate Number : {self.plate_number}
+        Plate Number : {self.plate_num}
         Type         : {self.vehicle_type}
-        Color        : {self.color}
+        Color        : {self.vehicle_color}
         """
