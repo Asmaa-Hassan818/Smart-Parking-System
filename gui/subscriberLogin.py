@@ -5,8 +5,6 @@ import random
 
 ctk.set_appearance_mode("dark")
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
 BG_COLOR       = "#0b0f1a"
 PANEL_COLOR    = "#121829"
 PANEL_BORDER   = "#1f2a44"
@@ -42,8 +40,7 @@ class ParticleOverlay(ctk.CTkCanvas):
             item = self.create_oval(x - r, y - r, x + r, y + r,
                                     fill=color, outline="")
             self.particles.append({
-                "id": item,
-                "speed": speed,
+                "id": item, "speed": speed,
                 "phase": random.uniform(0, math.tau)
             })
 
@@ -90,21 +87,17 @@ class SubscriberLoginScreen(ctk.CTk):
     Parameters
     ----------
     subscriber_manager : SubscriberManager
-        The shared manager instance that already holds all registered
-        subscribers.  The login screen calls
-        manager.search_subscriber(customer_id) to look up the real object.
-    parking_lot : ParkingLot
-        Passed straight through to SubscriberDashboard (may be None if the
-        subscriber already carries a reference to its own lot).
+        Shared instance that holds all registered subscribers.
+        Passed into the dashboard so Back can return here with the same data.
+    parking_lot : ParkingLot | None
+        Shared lot reference forwarded to the dashboard.
     """
 
     def __init__(self, subscriber_manager=None, parking_lot=None):
         super().__init__()
 
-        # Store the shared manager so handle_login can search it
         self.subscriber_manager = subscriber_manager
         self.parking_lot = parking_lot
-
         self.after_ids = []
         self.running = True
 
@@ -127,12 +120,11 @@ class SubscriberLoginScreen(ctk.CTk):
         self.panel.place(relx=0.5, rely=0.5, anchor="center")
         self.panel.pack_propagate(False)
 
-        self.badge = ctk.CTkLabel(
+        ctk.CTkLabel(
             self.panel, text="★ PREMIUM MEMBER",
             font=("Segoe UI", 10, "bold"),
             text_color="#06241c", fg_color=NEON_GREEN, corner_radius=12
-        )
-        self.badge.place(relx=0.97, rely=0.035, anchor="ne")
+        ).place(relx=0.97, rely=0.035, anchor="ne")
 
         self.icon_ring = ctk.CTkFrame(
             self.panel, width=90, height=90, corner_radius=45,
@@ -172,34 +164,29 @@ class SubscriberLoginScreen(ctk.CTk):
         )
         self.message_label.pack(pady=(2, 6))
 
-        self.login_btn = GlowButton(
+        GlowButton(
             self.panel, glow_color=NEON_BLUE,
             text="Login", width=320, height=46, corner_radius=12,
             fg_color=NEON_GREEN, hover_color="#6affc7",
             text_color="#06241c", font=("Segoe UI", 14, "bold"),
             command=self.handle_login
-        )
-        self.login_btn.pack(pady=(8, 12))
+        ).pack(pady=(8, 12))
 
-        self.back_btn = GlowButton(
+        GlowButton(
             self.panel, glow_color=NEON_BLUE,
             text="← Back", width=320, height=42, corner_radius=12,
             fg_color="transparent", hover_color="#1b2740",
             border_width=1.5, border_color=PANEL_BORDER,
             text_color=TEXT_SECONDARY, font=("Segoe UI", 12.5),
             command=self.go_back
-        )
-        self.back_btn.pack()
+        ).pack()
 
         self.attributes("-alpha", 0.0)
         self._alpha = 0.0
         self._slide_offset = 40
         self.after(50, self._animate_entrance)
-
         self._glow_up = True
         self.after(200, self._pulse_glow)
-
-    # ── animation helpers ─────────────────────────────────────────────────────
 
     def _resize_bg(self, event):
         return
@@ -240,7 +227,7 @@ class SubscriberLoginScreen(ctk.CTk):
         if hasattr(self, "particles"):
             self.particles.stop()
 
-    # ── navigation ─────────────────────────────────────────────────────────────
+    # ── Navigation ────────────────────────────────────────────────────────────
 
     def handle_login(self):
         from gui.subscriber_screen import SubscriberDashboard
@@ -249,39 +236,39 @@ class SubscriberLoginScreen(ctk.CTk):
 
         if not customer_id:
             self.message_label.configure(
-                text_color="#ff6b6b", text="Please enter your Customer ID."
-            )
+                text_color="#ff6b6b", text="Please enter your Customer ID.")
             return
 
-        # Guard: manager must have been supplied by the caller
         if self.subscriber_manager is None:
             self.message_label.configure(
                 text_color="#ff6b6b",
-                text="System error: no subscriber registry available."
-            )
+                text="System error: no subscriber registry available.")
             return
 
-        # Look up the real SubscriberCustomer object
         subscriber = self.subscriber_manager.search_subscriber(customer_id)
 
         if subscriber is None:
             self.message_label.configure(
                 text_color="#ff6b6b",
-                text="Customer ID not found. Please try again."
-            )
+                text="Customer ID not found. Please try again.")
             return
 
-        # Pass the real object — dashboard can access .name, .user_id,
-        # .subscription_hours, .park_vehicle(), .exit_vehicle(), etc.
         lot = self.parking_lot or subscriber.parking_lot
 
         self.stop_all()
         self.destroy()
 
-        app = SubscriberDashboard(subscriber=subscriber, parking_lot=lot)
+        # Pass subscriber_manager so dashboard's Back button can
+        # return here with the same shared data intact
+        app = SubscriberDashboard(
+            subscriber=subscriber,
+            parking_lot=lot,
+            subscriber_manager=self.subscriber_manager
+        )
         app.mainloop()
 
     def go_back(self):
+        """Back from login → Start Screen."""
         from gui.start_screen import StartScreen
 
         self.stop_all()
@@ -292,7 +279,6 @@ class SubscriberLoginScreen(ctk.CTk):
 
 
 if __name__ == "__main__":
-    # ── Demo / standalone test ────────────────────────────────────────────────
     from models.parking_lot import ParkingLot
     from models.parking_slot import ParkingSlot
     from models.subscriber_customer import SubscriberCustomer, SubscriberManager
@@ -302,9 +288,10 @@ if __name__ == "__main__":
         lot.add_slot(ParkingSlot(slot_id=f"A{i}"))
 
     manager = SubscriberManager()
-    sub = SubscriberCustomer(name="Asmaa", parking_lot=lot, subscription_hours=12)
+    sub = SubscriberCustomer(name="Asmaa", parking_lot=lot,
+                             subscription_hours=12)
     manager.add_subscriber(sub)
-    print(f"Test subscriber ID: {sub.user_id}")   # e.g. SUB1000
+    print(f"Test ID: {sub.user_id}")
 
     app = SubscriberLoginScreen(subscriber_manager=manager, parking_lot=lot)
     app.mainloop()

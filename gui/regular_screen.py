@@ -348,7 +348,7 @@ class RegularCustomerScreen(ctk.CTk):
         def do_park():
             new_vehicle = vehicle(plate_num=plate, vehicle_type=vtype, vehicle_color="N/A")
 
-            result = self.parking_lot.assign_vehicle(new_vehicle)
+            result = self.parking_lot.assign_vehicle(new_vehicle,None)
 
             if result["status"] == "parked":
                 ticket = result["ticket"]
@@ -466,7 +466,7 @@ class RegularCustomerScreen(ctk.CTk):
         if self.on_back:
             self.on_back()
         else:
-            from start_screen import StartScreen
+            from gui.start_screen import StartScreen
             app = StartScreen()
             self.destroy()
             app.mainloop()

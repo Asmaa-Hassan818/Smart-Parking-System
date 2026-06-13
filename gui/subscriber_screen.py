@@ -583,11 +583,6 @@ class SubscriberDashboard(ctk.CTk):
     # ── Navigation (Back / Logout) ────────────────────────────────────────────
 
     def handle_back(self):
-        """
-        Go back to the Subscriber Login screen so a different subscriber
-        can log in.  The shared subscriber_manager is passed along so
-        search_subscriber() still works on the next login attempt.
-        """
         from gui.subscriberLogin import SubscriberLoginScreen
 
         self.stop_all()
@@ -600,10 +595,6 @@ class SubscriberDashboard(ctk.CTk):
         app.mainloop()
 
     def handle_logout(self):
-        """
-        Logout → return to the application Start Screen.
-        Adjust the import path if your start screen lives elsewhere.
-        """
         from gui.start_screen import StartScreen
 
         self.stop_all()
