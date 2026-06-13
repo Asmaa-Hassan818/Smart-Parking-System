@@ -6,13 +6,13 @@ import random
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("blue")
 
-BG_COLOR        = "#0b0f1a"
-PANEL_COLOR     = "#121829"
-PANEL_BORDER    = "#1f2a44"
-NEON_BLUE       = "#3ad6ff"
-NEON_GREEN      = "#39ffb0"
-TEXT_PRIMARY    = "#eaf2ff"
-TEXT_SECONDARY  = "#7d90b3"
+BG_COLOR = "#0b0f1a"
+PANEL_COLOR = "#121829"
+PANEL_BORDER = "#1f2a44"
+NEON_BLUE = "#3ad6ff"
+NEON_GREEN = "#39ffb0"
+TEXT_PRIMARY = "#eaf2ff"
+TEXT_SECONDARY = "#7d90b3"
 CARD_HOVER_BLUE = "#16314f"
 CARD_HOVER_GREEN = "#143a30"
 
@@ -25,6 +25,7 @@ class ParticleCanvas(tk.Canvas):
         self.icons = []
         self.bind("<Configure>", self._on_resize)
         self._init_done = False
+        self.running = True
 
     def _on_resize(self, event):
         if not self._init_done:
@@ -41,19 +42,21 @@ class ParticleCanvas(tk.Canvas):
             speed = random.uniform(0.15, 0.6)
             color = random.choice([NEON_BLUE, NEON_GREEN, "#3a4a6b"])
             item = self.create_oval(x - r, y - r, x + r, y + r,
-                                     fill=color, outline="", stipple="")
+                                    fill=color, outline="")
             self.particles.append({
                 "id": item, "x": x, "y": y, "r": r,
                 "speed": speed, "phase": random.uniform(0, math.tau)
             })
 
     def _build_floating_icons(self, w, h):
-        glyphs = ["🅿", "🚗", "🚘", "⚡", "🛰", "🅿"]
-        for g in glyphs:
+        for g in ["🅿", "🚗", "🚘", "⚡", "🛰", "🅿"]:
             x = random.uniform(0.05 * w, 0.95 * w)
             y = random.uniform(0.1 * h, 0.9 * h)
-            item = self.create_text(x, y, text=g, font=("Segoe UI Emoji", random.randint(18, 34)),
-                                     fill="#22304f")
+            item = self.create_text(
+                x, y, text=g,
+                font=("Segoe UI Emoji", random.randint(18, 34)),
+                fill="#22304f"
+            )
             self.icons.append({
                 "id": item, "x": x, "y": y,
                 "vy": random.uniform(-0.08, -0.25),
@@ -61,6 +64,8 @@ class ParticleCanvas(tk.Canvas):
             })
 
     def _animate(self):
+        if not self.running:
+            return
         w = self.winfo_width()
         h = self.winfo_height()
 
@@ -79,26 +84,31 @@ class ParticleCanvas(tk.Canvas):
             self.move(ic["id"], dx, ic["vy"])
             coords = self.coords(ic["id"])
             if coords and coords[1] < -40:
-                self.moveto(ic["id"], random.uniform(0.05 * w, 0.95 * w), h + 20)
+                self.moveto(ic["id"],
+                            random.uniform(0.05 * w, 0.95 * w), h + 20)
 
-        self.after(40, self._animate)
+        try:
+            self.after(40, self._animate)
+        except Exception:
+            return
+
+    def stop(self):
+        self.running = False
 
 
 class ActionCard(ctk.CTkFrame):
 
-    def __init__(self, master, icon, title, subtitle, accent, command=None, **kwargs):
+    def __init__(self, master, icon, title, subtitle, accent,
+                 command=None, **kwargs):
         super().__init__(
-            master,
-            corner_radius=20,
-            fg_color=PANEL_COLOR,
-            border_width=2,
-            border_color=PANEL_BORDER,
-            **kwargs
+            master, corner_radius=20, fg_color=PANEL_COLOR,
+            border_width=2, border_color=PANEL_BORDER, **kwargs
         )
         self.accent = accent
         self.command = command
         self.base_border = PANEL_BORDER
-        self._hover_color = CARD_HOVER_BLUE if accent == NEON_BLUE else CARD_HOVER_GREEN
+        self._hover_color = (CARD_HOVER_BLUE if accent == NEON_BLUE
+                             else CARD_HOVER_GREEN)
 
         self.grid_propagate(False)
         self.configure(width=300, height=360)
@@ -111,13 +121,14 @@ class ActionCard(ctk.CTkFrame):
         self.icon_frame.pack_propagate(False)
 
         self.icon_label = ctk.CTkLabel(
-            self.icon_frame, text=icon, font=("Segoe UI Emoji", 30), text_color= accent
+            self.icon_frame, text=icon,
+            font=("Segoe UI Emoji", 30), text_color=accent
         )
         self.icon_label.place(relx=0.5, rely=0.5, anchor="center")
 
         self.title_label = ctk.CTkLabel(
-            self, text=title, font=("Segoe UI Semibold", 20, "bold"),
-            text_color=TEXT_PRIMARY
+            self, text=title,
+            font=("Segoe UI Semibold", 20, "bold"), text_color=TEXT_PRIMARY
         )
         self.title_label.pack(pady=(0, 6))
 
@@ -128,12 +139,11 @@ class ActionCard(ctk.CTkFrame):
         self.subtitle_label.pack(pady=(0, 18))
 
         self.enter_btn = ctk.CTkLabel(
-            self, text="Continue  →", font=("Segoe UI", 12, "bold"),
-            text_color=accent
+            self, text="Continue  →",
+            font=("Segoe UI", 12, "bold"), text_color=accent
         )
         self.enter_btn.pack(pady=(0, 10))
 
-        # bind hover & click on every child too
         for widget in (self, self.icon_frame, self.icon_label,
                        self.title_label, self.subtitle_label, self.enter_btn):
             widget.bind("<Enter>", self._on_enter)
@@ -142,12 +152,12 @@ class ActionCard(ctk.CTkFrame):
             widget.configure(cursor="hand2")
 
     def _on_enter(self, _event=None):
-        self.configure(border_color=self.accent, fg_color=self._hover_color)
-        self.pack_configure() if False else None
-        self.configure(border_width=3)
+        self.configure(border_color=self.accent,
+                       fg_color=self._hover_color, border_width=3)
 
     def _on_leave(self, _event=None):
-        self.configure(border_color=self.base_border, fg_color=PANEL_COLOR, border_width=2)
+        self.configure(border_color=self.base_border,
+                       fg_color=PANEL_COLOR, border_width=2)
 
     def _on_click(self, _event=None):
         if self.command:
@@ -155,8 +165,20 @@ class ActionCard(ctk.CTkFrame):
 
 
 class StartScreen(ctk.CTk):
-    def __init__(self):
+    """
+    Parameters
+    ----------
+    parking_lot        : ParkingLot       – shared lot (required for all screens)
+    subscriber_manager : SubscriberManager – shared manager (required for subscriber flow)
+    """
+
+    def __init__(self, parking_lot=None, subscriber_manager=None):
         super().__init__()
+
+        # Store shared state so it can be forwarded to child screens
+        self.parking_lot = parking_lot
+        self.subscriber_manager = subscriber_manager
+
         self.title("Smart Parking System")
         self.geometry("1100x720")
         self.minsize(960, 640)
@@ -168,54 +190,47 @@ class StartScreen(ctk.CTk):
         self.content = ctk.CTkFrame(self, fg_color="transparent")
         self.content.place(relx=0.5, rely=0.5, anchor="center")
 
-        self.logo_label = ctk.CTkLabel(
+        ctk.CTkLabel(
             self.content, text="🅿️ SMART PARKING SYSTEM",
             font=("Segoe UI", 30, "bold"), text_color=NEON_BLUE
-        )
-        self.logo_label.pack(pady=(0, 6))
+        ).pack(pady=(0, 6))
 
-        self.title_label = ctk.CTkLabel(
+        ctk.CTkLabel(
             self.content, text="Welcome to Smart Parking System",
             font=("Segoe UI", 26, "bold"), text_color=TEXT_PRIMARY
-        )
-        self.title_label.pack(pady=(0, 4))
+        ).pack(pady=(0, 4))
 
-        self.subtitle_label = ctk.CTkLabel(
+        ctk.CTkLabel(
             self.content,
             text="Efficient Parking Management for Administrators and Customers",
             font=("Segoe UI", 14), text_color=TEXT_SECONDARY
-        )
-        self.subtitle_label.pack(pady=(0, 36))
+        ).pack(pady=(0, 36))
 
         self.cards_frame = ctk.CTkFrame(self.content, fg_color="transparent")
         self.cards_frame.pack(pady=(0, 24))
 
-        self.admin_card = ActionCard(
+        ActionCard(
             self.cards_frame, icon="🛡️", title="Admin",
             subtitle="Manage parking slots, subscribers and monitor the garage",
-            accent=NEON_BLUE, command=self.open_admin()
-        )
-        self.admin_card.grid(row=0, column=0, padx=18)
+            accent=NEON_BLUE, command=self.open_admin
+        ).grid(row=0, column=0, padx=18)
 
-        self.subscriber_card = ActionCard(
+        ActionCard(
             self.cards_frame, icon="💳", title="Subscriber",
             subtitle="Login with your membership ID and manage your parking hours",
             accent=NEON_GREEN, command=self.open_subscriber
-        )
-        self.subscriber_card.grid(row=0, column=1, padx=18)
+        ).grid(row=0, column=1, padx=18)
 
-        self.regular_card = ActionCard(
+        ActionCard(
             self.cards_frame, icon="🚗", title="Regular Customer",
             subtitle="Park your vehicle and pay based on your parking duration",
             accent=NEON_BLUE, command=self.open_regular
-        )
-        self.regular_card.grid(row=0, column=2, padx=18)
+        ).grid(row=0, column=2, padx=18)
 
-        self.footer_label = ctk.CTkLabel(
+        ctk.CTkLabel(
             self, text="Smart Parking System © 2026",
             font=("Segoe UI", 11), text_color=TEXT_SECONDARY
-        )
-        self.footer_label.place(relx=0.5, rely=0.97, anchor="center")
+        ).place(relx=0.5, rely=0.97, anchor="center")
 
         self._fade_alpha = 0.0
         self._slide_offset = 40
@@ -225,25 +240,57 @@ class StartScreen(ctk.CTk):
     def _animate_entrance(self):
         self._fade_alpha = min(1.0, self._fade_alpha + 0.06)
         self.attributes("-alpha", self._fade_alpha)
-
         if self._slide_offset > 0:
             self._slide_offset -= 3
             self.content.place(relx=0.5, rely=0.5, anchor="center",
-                                y=self._slide_offset)
-
+                               y=self._slide_offset)
         if self._fade_alpha < 1.0 or self._slide_offset > 0:
             self.after(16, self._animate_entrance)
 
+    def _go(self, build_fn):
+        """Stop canvas, destroy self, then open the next screen."""
+        self.bg_canvas.stop()
+        self.destroy()
+        build_fn()
+
     def open_admin(self):
-        print("Open Admin Login screen")
+        def go():
+            from gui.adminLogin import AdminLoginScreen
+            AdminLoginScreen().mainloop()
+
+        self._go(go)
 
     def open_subscriber(self):
-        print("Open Subscriber screen")
+        def go():
+            from gui.subscriberLogin import SubscriberLoginScreen
+            SubscriberLoginScreen(
+                subscriber_manager=self.subscriber_manager,
+                parking_lot=self.parking_lot
+            ).mainloop()
+
+        self._go(go)
 
     def open_regular(self):
-        print("Open Regular Customer screen")
+        def go():
+            from gui.regular_screen import RegularCustomerScreen
+            RegularCustomerScreen(
+                parking_lot=self.parking_lot
+            ).mainloop()
+
+        self._go(go)
 
 
 if __name__ == "__main__":
-    app = StartScreen()
-    app.mainloop()
+    from models.parking_lot import ParkingLot
+    from models.parking_slot import ParkingSlot
+    from models.subscriber_customer import SubscriberCustomer, SubscriberManager
+
+    lot = ParkingLot(rate_per_hour=10)
+    for i in range(1, 6):
+        lot.add_slot(ParkingSlot(slot_id=f"A{i}"))
+
+    manager = SubscriberManager()
+    sub = SubscriberCustomer(name="Asmaa", parking_lot=lot, subscription_hours=12)
+    manager.add_subscriber(sub)
+
+    StartScreen(parking_lot=lot, subscriber_manager=manager).mainloop()

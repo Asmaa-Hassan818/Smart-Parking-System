@@ -3,7 +3,8 @@ import customtkinter as ctk
 import math
 import random
 
-from admin_dashboard import AdminDashboard, Admin, _build_demo_backend
+from models.admin import Admin
+from gui.admin_dashboard import AdminDashboard, _build_demo_backend
 
 ctk.set_appearance_mode("dark")
 

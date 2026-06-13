@@ -198,8 +198,10 @@ class ParticleOverlay(ctk.CTkCanvas):
             coords = self.coords(p["id"])
             if coords and coords[1] < -5:
                 self.move(p["id"], 0, h + 10)
-        self.after(40, self._animate)
-
+        try:
+            self.after(40, self._animate)
+        except:
+            return
 
 class GlassFrame(ctk.CTkFrame):
     def __init__(self, master, accent=NEON_BLUE, **kwargs):

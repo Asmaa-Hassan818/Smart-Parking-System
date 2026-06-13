@@ -4,7 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3cb5a617-e4fe-4fb2-b21f-e30bdddeb351" name="Changes" comment="guiiii" />
+    <list default="true" id="3cb5a617-e4fe-4fb2-b21f-e30bdddeb351" name="Changes" comment="guiiii">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/adminLogin.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/adminLogin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/admin_dashboard.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/admin_dashboard.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/regular_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/regular_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/start_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/start_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/subscriberLogin.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/subscriberLogin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/subscriber_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/subscriber_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -43,19 +52,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.adminLogin.executor": "Run",
-    "Python.admin_dashboard.executor": "Run",
-    "Python.main.executor": "Run",
-    "Python.regular_screen.executor": "Run",
-    "Python.start_screen.executor": "Run",
-    "Python.subscriberLogin.executor": "Run",
-    "Python.subscriber_screen.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.adminLogin.executor&quot;: &quot;Run&quot;,
+    &quot;Python.admin_dashboard.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;Python.regular_screen.executor&quot;: &quot;Run&quot;,
+    &quot;Python.start_screen.executor&quot;: &quot;Run&quot;,
+    &quot;Python.subscriberLogin.executor&quot;: &quot;Run&quot;,
+    &quot;Python.subscriber_screen.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;
   }
-}]]></component>
+}</component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -120,7 +129,23 @@
       <option name="project" value="LOCAL" />
       <updated>1781364718178</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="guiiii">
+      <option name="closed" value="true" />
+      <created>1781364880389</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1781364880389</updated>
+    </task>
+    <task id="LOCAL-00008" summary="guiiii">
+      <option name="closed" value="true" />
+      <created>1781365049745</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1781365049745</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">

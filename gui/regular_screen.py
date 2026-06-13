@@ -466,8 +466,10 @@ class RegularCustomerScreen(ctk.CTk):
         if self.on_back:
             self.on_back()
         else:
-            print("Go back to Start Screen")
+            from start_screen import StartScreen
+            app = StartScreen()
             self.destroy()
+            app.mainloop()
 
 
 if __name__ == "__main__":
