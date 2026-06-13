@@ -1,11 +1,3 @@
-"""
-Smart Parking System - Subscriber Login Screen (CustomTkinter)
-Matches Start Screen & Admin Login design, with a neon-green "premium member" theme.
-
-Run:
-    python subscriber_login.py
-(expects assets/bg.png next to this file)
-"""
 
 import customtkinter as ctk
 import os
@@ -17,7 +9,6 @@ ctk.set_appearance_mode("dark")
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 BG_PATH = os.path.join(BASE_DIR, "assets", "bg.png")
 
-# ---- Palette ----
 BG_COLOR       = "#0b0f1a"
 PANEL_COLOR    = "#121829"
 PANEL_BORDER   = "#1f2a44"
@@ -28,7 +19,6 @@ TEXT_SECONDARY = "#7d90b3"
 
 
 class ParticleOverlay(ctk.CTkCanvas):
-    """Floating neon particles drifting upward."""
 
     def __init__(self, master, **kwargs):
         super().__init__(master, highlightthickness=0, bd=0, **kwargs)
@@ -65,7 +55,6 @@ class ParticleOverlay(ctk.CTkCanvas):
 
 
 class GlowButton(ctk.CTkButton):
-    """CTkButton with a hover border-glow illusion."""
 
     def __init__(self, master, glow_color=NEON_GREEN, **kwargs):
         super().__init__(master, **kwargs)
@@ -88,17 +77,14 @@ class SubscriberLoginScreen(ctk.CTk):
         self.minsize(1000, 650)
         self.configure(fg_color=BG_COLOR)
 
-        # ---------- background image ----------
         self._bg_ctk = None
         self.bg_label = ctk.CTkLabel(self, text="")
         self.bg_label.place(x=0, y=0, relwidth=1, relheight=1)
         self.bind("<Configure>", self._resize_bg)
 
-        # particle overlay
         self.particles = ParticleOverlay(self, bg=BG_COLOR)
         self.particles.place(x=0, y=0, relwidth=1, relheight=1)
 
-        # ---------- glassmorphism login panel ----------
         self.panel = ctk.CTkFrame(
             self, width=440, height=500, corner_radius=24,
             fg_color=PANEL_COLOR, border_width=2, border_color=NEON_GREEN
@@ -106,7 +92,6 @@ class SubscriberLoginScreen(ctk.CTk):
         self.panel.place(relx=0.5, rely=0.5, anchor="center")
         self.panel.pack_propagate(False)
 
-        # premium badge (top-right of panel)
         self.badge = ctk.CTkLabel(
             self.panel, text="★ PREMIUM MEMBER",
             font=("Segoe UI", 10, "bold"), text_color="#06241c",
@@ -114,7 +99,6 @@ class SubscriberLoginScreen(ctk.CTk):
         )
         self.badge.place(relx=0.97, rely=0.035, anchor="ne")
 
-        # icon ring (membership card)
         self.icon_ring = ctk.CTkFrame(
             self.panel, width=90, height=90, corner_radius=45,
             fg_color="#0e2a22", border_width=2, border_color=NEON_GREEN
@@ -125,7 +109,6 @@ class SubscriberLoginScreen(ctk.CTk):
             self.icon_ring, text="💳", font=("Segoe UI Emoji", 36)
         ).place(relx=0.5, rely=0.5, anchor="center")
 
-        # title + subtitle
         ctk.CTkLabel(
             self.panel, text="Subscriber Login",
             font=("Segoe UI", 26, "bold"), text_color=TEXT_PRIMARY
@@ -137,7 +120,6 @@ class SubscriberLoginScreen(ctk.CTk):
             wraplength=340, justify="center"
         ).pack(pady=(0, 30))
 
-        # input field
         self.customer_id_entry = ctk.CTkEntry(
             self.panel, width=320, height=46, corner_radius=12,
             placeholder_text="Enter Customer ID",
@@ -150,13 +132,11 @@ class SubscriberLoginScreen(ctk.CTk):
         self.customer_id_entry.bind("<FocusOut>", self._entry_focus_out)
         self.customer_id_entry.bind("<Return>", lambda e: self.handle_login())
 
-        # status message
         self.message_label = ctk.CTkLabel(
             self.panel, text="", font=("Segoe UI", 11.5), text_color="#ff6b6b"
         )
         self.message_label.pack(pady=(2, 6))
 
-        # Login button (primary, neon green glow)
         self.login_btn = GlowButton(
             self.panel, glow_color=NEON_BLUE,
             text="Login", width=320, height=46, corner_radius=12,
@@ -166,7 +146,6 @@ class SubscriberLoginScreen(ctk.CTk):
         )
         self.login_btn.pack(pady=(8, 12))
 
-        # Back button (glassmorphism / minimal)
         self.back_btn = GlowButton(
             self.panel, glow_color=NEON_BLUE,
             text="← Back", width=320, height=42, corner_radius=12,
@@ -180,24 +159,19 @@ class SubscriberLoginScreen(ctk.CTk):
             text_color=TEXT_PRIMARY, border_color=NEON_GREEN))
         self.back_btn.bind("<Leave>", lambda e: self.back_btn.configure(
             text_color=TEXT_SECONDARY, border_color=PANEL_BORDER))
-
-        # footer
         ctk.CTkLabel(
             self, text="SMART PARKING SYSTEM  ©  2026",
             font=("Segoe UI", 11), text_color=TEXT_SECONDARY
         ).place(relx=0.5, rely=0.97, anchor="center")
 
-        # ---------- entrance animation ----------
         self.attributes("-alpha", 0.0)
         self._alpha = 0.0
         self._slide_offset = 40
         self.after(50, self._animate_entrance)
 
-        # pulsing glow on icon ring + panel border
         self._glow_up = True
         self.after(200, self._pulse_glow)
 
-    # ---------- background handling ----------
     def _resize_bg(self, event):
         if event.widget is not self or self._bg_pil is None:
             return
@@ -214,7 +188,6 @@ class SubscriberLoginScreen(ctk.CTk):
         if self._alpha < 1.0 or self._slide_offset > 0:
             self.after(16, self._animate_entrance)
 
-    # ---------- pulsing neon glow ----------
     def _pulse_glow(self):
         if self._glow_up:
             self.icon_ring.configure(border_color=NEON_BLUE)
@@ -225,25 +198,21 @@ class SubscriberLoginScreen(ctk.CTk):
         self._glow_up = not self._glow_up
         self.after(900, self._pulse_glow)
 
-    # ---------- input focus glow ----------
     def _entry_focus_in(self, _e=None):
         self.customer_id_entry.configure(border_color=NEON_GREEN, border_width=2)
 
     def _entry_focus_out(self, _e=None):
         self.customer_id_entry.configure(border_color=PANEL_BORDER, border_width=1.5)
 
-    # ---------- actions ----------
     def handle_login(self):
         customer_id = self.customer_id_entry.get().strip().upper()
 
-        # placeholder validation - replace with subscriber_manager.search_subscriber(customer_id)
         if customer_id.startswith("SUB") and len(customer_id) >= 4:
             self.message_label.configure(
                 text_color=NEON_GREEN,
                 text=f"Welcome back, {customer_id}!"
             )
             print(f"Login success -> open Subscriber Dashboard for {customer_id}")
-            #self.destroy(); open SubscriberDashboard(subscriber)
         else:
             self.message_label.configure(
                 text_color="#ff6b6b",
