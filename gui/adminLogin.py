@@ -3,12 +3,10 @@ import customtkinter as ctk
 import math
 import random
 
-# Import dashboard + backend factory from the same package
 from admin_dashboard import AdminDashboard, Admin, _build_demo_backend
 
 ctk.set_appearance_mode("dark")
 
-# ── Palette (matches dashboard exactly) ────────────────────────
 BG_COLOR       = "#0b0f1a"
 PANEL_COLOR    = "#121829"
 PANEL_BORDER   = "#1f2a44"
@@ -18,10 +16,6 @@ TEXT_PRIMARY   = "#eaf2ff"
 TEXT_SECONDARY = "#7d90b3"
 DANGER_COLOR   = "#ff6b6b"
 
-
-# ═══════════════════════════════════════════════════════════════
-#  SHARED UI COMPONENTS
-# ═══════════════════════════════════════════════════════════════
 
 class ParticleOverlay(ctk.CTkCanvas):
     def __init__(self, master, **kwargs):
@@ -71,18 +65,9 @@ class GlowButton(ctk.CTkButton):
         self.configure(border_width=0)
 
 
-# ═══════════════════════════════════════════════════════════════
-#  ADMIN LOGIN SCREEN
-# ═══════════════════════════════════════════════════════════════
-
 class AdminLoginScreen(ctk.CTk):
 
     def __init__(self, shared_backend=None):
-        """
-        shared_backend: if None, a fresh demo backend is created on login.
-                        Pass an existing (sub_mgr, lot) tuple to share state
-                        with other screens (e.g. when coming from StartScreen).
-        """
         super().__init__()
         self._shared_backend = shared_backend
         self._running = True
@@ -92,18 +77,15 @@ class AdminLoginScreen(ctk.CTk):
         self.minsize(1000, 650)
         self.configure(fg_color=BG_COLOR)
 
-        # ── Particle background ─────────────────────────────
         self.particles = ParticleOverlay(self, bg=BG_COLOR)
         self.particles.place(x=0, y=0, relwidth=1, relheight=1)
 
-        # ── Glass login panel ───────────────────────────────
         self.panel = ctk.CTkFrame(
             self, width=440, height=490, corner_radius=24,
             fg_color=PANEL_COLOR, border_width=2, border_color=PANEL_BORDER)
         self.panel.place(relx=0.5, rely=0.5, anchor="center")
         self.panel.pack_propagate(False)
 
-        # Icon ring
         self.icon_ring = ctk.CTkFrame(
             self.panel, width=90, height=90, corner_radius=45,
             fg_color="#0e1f38", border_width=2, border_color=NEON_BLUE)
@@ -112,7 +94,6 @@ class AdminLoginScreen(ctk.CTk):
         ctk.CTkLabel(self.icon_ring, text="🛡️",
                       font=("Segoe UI Emoji", 36)).place(relx=.5, rely=.5, anchor="center")
 
-        # Title
         ctk.CTkLabel(self.panel, text="Admin Login",
                       font=("Segoe UI", 26, "bold"),
                       text_color=TEXT_PRIMARY).pack(pady=(0, 4))
@@ -121,7 +102,6 @@ class AdminLoginScreen(ctk.CTk):
                       font=("Segoe UI", 12),
                       text_color=TEXT_SECONDARY).pack(pady=(0, 26))
 
-        # Admin ID entry
         self.id_entry = ctk.CTkEntry(
             self.panel, width=320, height=46, corner_radius=12,
             placeholder_text="Admin ID  (e.g. ADM001)",
@@ -133,13 +113,11 @@ class AdminLoginScreen(ctk.CTk):
         self.id_entry.bind("<FocusOut>", self._entry_focus_out)
         self.id_entry.bind("<Return>",   lambda e: self._handle_login())
 
-        # Status / error message
         self.msg_label = ctk.CTkLabel(
             self.panel, text="", font=("Segoe UI", 11.5),
             text_color=DANGER_COLOR, wraplength=310)
         self.msg_label.pack(pady=(2, 8))
 
-        # Login button
         self.login_btn = GlowButton(
             self.panel, text="Login →", width=320, height=46, corner_radius=12,
             fg_color=NEON_BLUE, hover_color="#5fe3ff",
@@ -147,7 +125,6 @@ class AdminLoginScreen(ctk.CTk):
             command=self._handle_login)
         self.login_btn.pack(pady=(0, 10))
 
-        # Back button
         self.back_btn = ctk.CTkButton(
             self.panel, text="← Back", width=320, height=42, corner_radius=12,
             fg_color="transparent", hover_color="#1b2740",
@@ -159,21 +136,17 @@ class AdminLoginScreen(ctk.CTk):
             text_color=TEXT_PRIMARY, border_color=NEON_GREEN))
         self.back_btn.bind("<Leave>", lambda e: self.back_btn.configure(
             text_color=TEXT_SECONDARY, border_color=PANEL_BORDER))
-
-        # Hint: show valid IDs (remove in production)
         ctk.CTkLabel(
             self.panel,
             text="Demo IDs: ADM001 · ADM002 · ADM003",
             font=("Segoe UI", 10), text_color=TEXT_SECONDARY
         ).pack(pady=(16, 0))
 
-        # Footer
         ctk.CTkLabel(
             self, text="SMART PARKING SYSTEM  ©  2026",
             font=("Segoe UI", 11), text_color=TEXT_SECONDARY
         ).place(relx=0.5, rely=0.97, anchor="center")
 
-        # ── Entrance animation ──────────────────────────────
         self.attributes("-alpha", 0.0)
         self._alpha        = 0.0
         self._slide_offset = 40
@@ -182,14 +155,12 @@ class AdminLoginScreen(ctk.CTk):
         self._glow_up = True
         self.after(200, self._pulse_icon_ring)
 
-    # ─── Entry focus glow ────────────────────────────────────
     def _entry_focus_in(self, _=None):
         self.id_entry.configure(border_color=NEON_BLUE, border_width=2)
 
     def _entry_focus_out(self, _=None):
         self.id_entry.configure(border_color=PANEL_BORDER, border_width=1.5)
 
-    # ─── Animations ──────────────────────────────────────────
     def _animate_entrance(self):
         if not self._running:
             return
@@ -210,7 +181,6 @@ class AdminLoginScreen(ctk.CTk):
         self._glow_up = not self._glow_up
         self.after(900, self._pulse_icon_ring)
 
-    # ─── Login logic ─────────────────────────────────────────
     def _handle_login(self):
         admin_id = self.id_entry.get().strip().upper()
 
@@ -225,19 +195,15 @@ class AdminLoginScreen(ctk.CTk):
             self.id_entry.delete(0, "end")
             return
 
-        # ── Success ──────────────────────────────────────────
         name = Admin.VALID_ADMINS[admin_id]
         self._set_msg(f"Welcome, {name}! Opening dashboard…", NEON_GREEN)
         self.login_btn.configure(state="disabled", text="Please wait…")
         self.after(600, lambda: self._open_dashboard(admin_id, name))
 
     def _open_dashboard(self, admin_id: str, name: str):
-        # Build or reuse backend
         if self._shared_backend is not None:
             sub_mgr, lot = self._shared_backend
         else:
-            # _build_demo_backend() returns a fully wired Admin;
-            # we rebuild the admin with the correct ID/name from login.
             demo_admin = _build_demo_backend()
             sub_mgr = demo_admin.subscriber_manager
             lot     = demo_admin.parking_lot
@@ -250,23 +216,13 @@ class AdminLoginScreen(ctk.CTk):
         dashboard = AdminDashboard(admin)
         dashboard.mainloop()
 
-    # ─── Back ────────────────────────────────────────────────
     def _go_back(self):
-        """Destroy login screen and return to Start Screen (wire up as needed)."""
         self._running = False
         self.destroy()
-        # Uncomment when StartScreen is available:
-        # from start_screen import StartScreen
-        # StartScreen().mainloop()
-
-    # ─── Helpers ─────────────────────────────────────────────
     def _set_msg(self, text: str, color: str):
         self.msg_label.configure(text=text, text_color=color)
 
 
-# ═══════════════════════════════════════════════════════════════
-#  ENTRY POINT
-# ═══════════════════════════════════════════════════════════════
 
 if __name__ == "__main__":
     app = AdminLoginScreen()

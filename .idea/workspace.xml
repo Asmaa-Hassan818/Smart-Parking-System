@@ -4,15 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3cb5a617-e4fe-4fb2-b21f-e30bdddeb351" name="Changes" comment="............">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui/adminLogin.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/adminLogin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui/admin_dashboard.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/admin_dashboard.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui/parking_map.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui/regular_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/regular_screen.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui/start_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/start_screen.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui/subscriber_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/subscriber_screen.py" afterDir="false" />
-    </list>
+    <list default="true" id="3cb5a617-e4fe-4fb2-b21f-e30bdddeb351" name="Changes" comment="guiiii" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -120,12 +112,21 @@
       <option name="project" value="LOCAL" />
       <updated>1781300311784</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="guiiii">
+      <option name="closed" value="true" />
+      <created>1781364718178</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1781364718178</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="updatesss" />
     <MESSAGE value="............" />
-    <option name="LAST_COMMIT_MESSAGE" value="............" />
+    <MESSAGE value="guiiii" />
+    <option name="LAST_COMMIT_MESSAGE" value="guiiii" />
   </component>
 </project>
