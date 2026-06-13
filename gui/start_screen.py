@@ -6,7 +6,6 @@ import random
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("blue")
 
-# ---------- Palette ----------
 BG_COLOR        = "#0b0f1a"
 PANEL_COLOR     = "#121829"
 PANEL_BORDER    = "#1f2a44"
@@ -19,7 +18,6 @@ CARD_HOVER_GREEN = "#143a30"
 
 
 class ParticleCanvas(tk.Canvas):
-    """Animated floating-particle background with a subtle drifting glow."""
 
     def __init__(self, master, **kwargs):
         super().__init__(master, bg=BG_COLOR, highlightthickness=0, **kwargs)
@@ -50,7 +48,6 @@ class ParticleCanvas(tk.Canvas):
             })
 
     def _build_floating_icons(self, w, h):
-        # simple text glyphs as "floating parking icons"
         glyphs = ["🅿", "🚗", "🚘", "⚡", "🛰", "🅿"]
         for g in glyphs:
             x = random.uniform(0.05 * w, 0.95 * w)
@@ -67,7 +64,6 @@ class ParticleCanvas(tk.Canvas):
         w = self.winfo_width()
         h = self.winfo_height()
 
-        # drifting particles (gentle horizontal sine sway + downward drift)
         for p in self.particles:
             p["phase"] += 0.02
             p["y"] += p["speed"]
@@ -77,7 +73,6 @@ class ParticleCanvas(tk.Canvas):
                 p["x"] = random.uniform(0, w)
             self.move(p["id"], dx, p["speed"])
 
-        # floating icons drift upward slowly, wrap around
         for ic in self.icons:
             ic["phase"] += 0.01
             dx = math.sin(ic["phase"]) * 0.3
@@ -90,7 +85,6 @@ class ParticleCanvas(tk.Canvas):
 
 
 class ActionCard(ctk.CTkFrame):
-    """A glassmorphism-style clickable card with hover glow + scale effect."""
 
     def __init__(self, master, icon, title, subtitle, accent, command=None, **kwargs):
         super().__init__(
@@ -109,7 +103,6 @@ class ActionCard(ctk.CTkFrame):
         self.grid_propagate(False)
         self.configure(width=300, height=360)
 
-        # Icon circle
         self.icon_frame = ctk.CTkFrame(
             self, width=72, height=72, corner_radius=36,
             fg_color="#1a2236", border_width=2, border_color=accent
@@ -150,7 +143,6 @@ class ActionCard(ctk.CTkFrame):
 
     def _on_enter(self, _event=None):
         self.configure(border_color=self.accent, fg_color=self._hover_color)
-        # subtle "lift" via padding change to simulate scale-up
         self.pack_configure() if False else None
         self.configure(border_width=3)
 
@@ -170,15 +162,12 @@ class StartScreen(ctk.CTk):
         self.minsize(960, 640)
         self.configure(fg_color=BG_COLOR)
 
-        # ---- Background particle canvas (fills entire window) ----
         self.bg_canvas = ParticleCanvas(self)
         self.bg_canvas.place(relx=0, rely=0, relwidth=1, relheight=1)
 
-        # ---- Foreground content container ----
         self.content = ctk.CTkFrame(self, fg_color="transparent")
         self.content.place(relx=0.5, rely=0.5, anchor="center")
 
-        # Logo / Title
         self.logo_label = ctk.CTkLabel(
             self.content, text="🅿️ SMART PARKING SYSTEM",
             font=("Segoe UI", 30, "bold"), text_color=NEON_BLUE
@@ -198,14 +187,13 @@ class StartScreen(ctk.CTk):
         )
         self.subtitle_label.pack(pady=(0, 36))
 
-        # Cards row
         self.cards_frame = ctk.CTkFrame(self.content, fg_color="transparent")
         self.cards_frame.pack(pady=(0, 24))
 
         self.admin_card = ActionCard(
             self.cards_frame, icon="🛡️", title="Admin",
             subtitle="Manage parking slots, subscribers and monitor the garage",
-            accent=NEON_BLUE, command=self.open_admin
+            accent=NEON_BLUE, command=self.open_admin()
         )
         self.admin_card.grid(row=0, column=0, padx=18)
 
@@ -223,20 +211,17 @@ class StartScreen(ctk.CTk):
         )
         self.regular_card.grid(row=0, column=2, padx=18)
 
-        # Footer
         self.footer_label = ctk.CTkLabel(
             self, text="Smart Parking System © 2026",
             font=("Segoe UI", 11), text_color=TEXT_SECONDARY
         )
         self.footer_label.place(relx=0.5, rely=0.97, anchor="center")
 
-        # ---- entrance animation ----
         self._fade_alpha = 0.0
         self._slide_offset = 40
         self.attributes("-alpha", 0.0)
         self.after(50, self._animate_entrance)
 
-    # ----- entrance animation: fade-in window + slide-up content -----
     def _animate_entrance(self):
         self._fade_alpha = min(1.0, self._fade_alpha + 0.06)
         self.attributes("-alpha", self._fade_alpha)
@@ -249,7 +234,6 @@ class StartScreen(ctk.CTk):
         if self._fade_alpha < 1.0 or self._slide_offset > 0:
             self.after(16, self._animate_entrance)
 
-    # ----- navigation callbacks (placeholders) -----
     def open_admin(self):
         print("Open Admin Login screen")
 
