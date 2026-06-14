@@ -5,14 +5,15 @@ class SubscriberCustomer(Customer):
     subscriber_counter = 1000
 
     def __init__(self, name, parking_lot, subscription_hours):
-        user_id = f"SUB{SubscriberCustomer.subscriber_counter}"
         SubscriberCustomer.subscriber_counter += 1
+        user_id = f"SUB{SubscriberCustomer.subscriber_counter}"
 
         super().__init__(user_id, name)
         self.parking_lot = parking_lot
         self.subscription_hours = subscription_hours
         self.vehicle = None
         self.ticket = None
+        self.parking_history = []   # list of dicts saved on each exit
 
     def park_vehicle(self, vehicle):
         self.vehicle = vehicle
@@ -57,6 +58,16 @@ class SubscriberCustomer(Customer):
                 f"Extra hours: {round(extra_hours, 4)} -> Pay {ticket.cost} EGP\n"
                 f"Remaining subscription hours: 0"
             )
+
+        self.parking_history.append({
+            "ticket_id":  ticket.ticket_id,
+            "plate":      ticket.vehicle.plate_num,
+            "slot":       ticket.slot_id,
+            "entry":      ticket.entry_time,
+            "exit":       ticket.exit_time,
+            "duration":   round(duration, 4),
+            "cost":       ticket.cost,
+        })
 
         return {
             "status": "done",

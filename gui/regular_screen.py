@@ -88,11 +88,12 @@ class RegularCustomerScreen(ctk.CTk):
 
     VEHICLE_TYPES = ["Car", "SUV", "Motorcycle", "Van", "Truck"]
 
-    def __init__(self, parking_lot, on_back=None):
+    def __init__(self, parking_lot, on_back=None, subscriber_manager=None):
         super().__init__()
         self._bg_pil = None
         self.parking_lot = parking_lot
         self.on_back = on_back
+        self.subscriber_manager = subscriber_manager
         self._bg_ctk = None
         self._alpha = 0.0
 
@@ -465,9 +466,10 @@ class RegularCustomerScreen(ctk.CTk):
             self.on_back()
         else:
             from gui.start_screen import StartScreen
-            app = StartScreen()
+            lot     = self.parking_lot
+            sub_mgr = self.subscriber_manager
             self.destroy()
-            app.mainloop()
+            StartScreen(parking_lot=lot, subscriber_manager=sub_mgr).mainloop()
 
 
 if __name__ == "__main__":

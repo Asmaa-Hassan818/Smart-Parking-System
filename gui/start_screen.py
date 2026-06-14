@@ -264,10 +264,13 @@ class StartScreen(ctk.CTk):
         self._go(go)
 
     def open_regular(self):
+        lot     = self.parking_lot
+        sub_mgr = self.subscriber_manager
         def go():
             from gui.regular_screen import RegularCustomerScreen
             RegularCustomerScreen(
-                parking_lot=self.parking_lot
+                parking_lot=lot,
+                subscriber_manager=sub_mgr
             ).mainloop()
 
         self._go(go)

@@ -270,7 +270,8 @@ class SubscriberLoginScreen(ctk.CTk):
         self.stop_all()
         self.destroy()
 
-        app = StartScreen()
+        app = StartScreen(parking_lot=self.parking_lot,
+                          subscriber_manager=self.subscriber_manager)
         app.mainloop()
 
 

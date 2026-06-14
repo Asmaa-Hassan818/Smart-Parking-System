@@ -712,9 +712,10 @@ class AdminDashboard(ctk.CTk):
                 except Exception:
                     pass
         from gui.start_screen import StartScreen
-        app = StartScreen()
+        lot     = self.lot
+        sub_mgr = self.admin.subscriber_manager
         self.destroy()
-        app.mainloop()
+        StartScreen(parking_lot=lot, subscriber_manager=sub_mgr).mainloop()
 
     # ── Animations ────────────────────────────────────────────────────────────
 

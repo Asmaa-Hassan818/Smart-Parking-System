@@ -565,12 +565,118 @@ class SubscriberDashboard(ctk.CTk):
         self._run_loading(do_exit)
 
     def handle_view_history(self):
+        history = self.subscriber.parking_history
+
         self.ticket_title.configure(text="Parking History")
-        self.ticket_subtitle.configure(text="Coming soon")
-        self._set_status("● Feature Not Available Yet", TEXT_SECONDARY)
+        self.ticket_subtitle.configure(
+            text=f"{len(history)} session(s) recorded")
+
+        if not history:
+            self._set_status("● No history yet", TEXT_SECONDARY)
+            self._set_message(
+                "Your completed parking sessions will appear here after you exit a vehicle.",
+                NEON_BLUE)
+            self._reset_detail_panel()
+            return
+
+        # Show latest session summary in the detail panel
+        latest = history[-1]
+        self._reset_detail_panel()
+        self.row_ticket_id.configure(text=latest["ticket_id"])
+        self.row_slot.configure(text=latest["slot"])
+        self.row_duration.configure(text=f"{latest['duration']} hrs")
+        self.row_deducted.configure(text="—")
+        self.row_remaining.configure(text="—")
+        cost_text = f"{latest['cost']} EGP" if latest["cost"] else "Free"
+        self.row_extra_cost.configure(
+            text=cost_text,
+            text_color=NEON_RED if latest["cost"] else NEON_GREEN)
+        self._set_status("● Latest session loaded", NEON_BLUE)
         self._set_message(
-            "Parking history tracking will be available in a future update.",
-            NEON_CYAN)
+            f"Showing latest of {len(history)} session(s). Click 'Full History' for all.",
+            NEON_BLUE)
+
+        # Open full history popup
+        self._open_history_popup(history)
+
+    def _open_history_popup(self, history):
+        import tkinter as tk
+
+        win = ctk.CTkToplevel(self)
+        win.title("Parking History")
+        win.geometry("780x520")
+        win.configure(fg_color=BG_COLOR)
+        win.grab_set()
+        win.attributes("-topmost", True)
+
+        # Header
+        hdr = ctk.CTkFrame(win, fg_color=PANEL_COLOR, corner_radius=0, height=54)
+        hdr.pack(fill="x"); hdr.pack_propagate(False)
+        ctk.CTkLabel(hdr, text="🕑  Parking History",
+                     font=("Segoe UI", 16, "bold"),
+                     text_color=NEON_BLUE).pack(side="left", padx=22, pady=14)
+        ctk.CTkLabel(hdr, text=f"{len(history)} session(s)",
+                     font=("Segoe UI", 12),
+                     text_color=TEXT_SECONDARY).pack(side="left", padx=4, pady=14)
+        ctk.CTkButton(hdr, text="✕", width=36, height=36, corner_radius=8,
+                      fg_color="transparent", hover_color="#3a1f25",
+                      text_color=TEXT_SECONDARY, font=("Segoe UI", 14),
+                      command=win.destroy).pack(side="right", padx=12)
+
+        body = ctk.CTkFrame(win, fg_color="transparent")
+        body.pack(fill="both", expand=True, padx=20, pady=16)
+
+        # Column headers
+        cols   = [("Ticket",  90), ("Plate",  110), ("Slot", 70),
+                  ("Entry",  155), ("Exit",   155), ("Duration", 90), ("Cost", 80)]
+        col_hdr = ctk.CTkFrame(body, fg_color="#0e1f38", corner_radius=10, height=36)
+        col_hdr.pack(fill="x", pady=(0, 6)); col_hdr.pack_propagate(False)
+        for name, w in cols:
+            ctk.CTkLabel(col_hdr, text=name, font=("Segoe UI", 11, "bold"),
+                         text_color=NEON_BLUE, width=w).pack(side="left", padx=6, pady=8)
+
+        # Rows — newest first
+        scroll = ctk.CTkScrollableFrame(body, fg_color="transparent")
+        scroll.pack(fill="both", expand=True)
+
+        fmt = "%Y-%m-%d %H:%M"
+        for record in reversed(history):
+            row = ctk.CTkFrame(scroll, fg_color="#121829", corner_radius=10,
+                               border_width=1, border_color=PANEL_BORDER)
+            row.pack(fill="x", pady=3)
+            cost_str = f"{record['cost']} EGP" if record["cost"] else "Free"
+            values = [
+                (record["ticket_id"],                          90,  NEON_BLUE),
+                (record["plate"],                              110, TEXT_PRIMARY),
+                (record["slot"],                               70,  TEXT_PRIMARY),
+                (record["entry"].strftime(fmt),                155, TEXT_SECONDARY),
+                (record["exit"].strftime(fmt) if record["exit"] else "—", 155, TEXT_SECONDARY),
+                (f"{record['duration']} hrs",                  90,  TEXT_PRIMARY),
+                (cost_str,                                     80,
+                 NEON_RED if record["cost"] else NEON_GREEN),
+            ]
+            for val, w, color in values:
+                ctk.CTkLabel(row, text=val, font=("Segoe UI", 11),
+                             text_color=color, width=w).pack(
+                                 side="left", padx=6, pady=8)
+
+        # Summary bar
+        total_sessions = len(history)
+        total_cost     = sum(r["cost"] for r in history)
+        total_duration = sum(r["duration"] for r in history)
+
+        summary = ctk.CTkFrame(body, fg_color="#0e1f38", corner_radius=12, height=44)
+        summary.pack(fill="x", pady=(10, 0)); summary.pack_propagate(False)
+        for label, value in [
+            ("Total Sessions", str(total_sessions)),
+            ("Total Duration", f"{round(total_duration, 2)} hrs"),
+            ("Total Cost",     f"{round(total_cost, 2)} EGP"),
+        ]:
+            f = ctk.CTkFrame(summary, fg_color="transparent"); f.pack(side="left", padx=20)
+            ctk.CTkLabel(f, text=label, font=("Segoe UI", 10),
+                         text_color=TEXT_SECONDARY).pack(side="left", padx=(0, 6))
+            ctk.CTkLabel(f, text=value, font=("Segoe UI", 12, "bold"),
+                         text_color=NEON_GREEN).pack(side="left")
 
 
     def handle_back(self):
@@ -587,12 +693,11 @@ class SubscriberDashboard(ctk.CTk):
 
     def handle_logout(self):
         from gui.start_screen import StartScreen
-
+        lot     = self.parking_lot
+        sub_mgr = self.subscriber_manager
         self.stop_all()
         self.destroy()
-
-        app = StartScreen()
-        app.mainloop()
+        StartScreen(parking_lot=lot, subscriber_manager=sub_mgr).mainloop()
 
 
 if __name__ == "__main__":

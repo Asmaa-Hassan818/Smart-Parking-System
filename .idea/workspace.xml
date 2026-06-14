@@ -4,14 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3cb5a617-e4fe-4fb2-b21f-e30bdddeb351" name="Changes" comment=".">
+    <list default="true" id="3cb5a617-e4fe-4fb2-b21f-e30bdddeb351" name="Changes" comment="final version">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gui/admin_dashboard.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/admin_dashboard.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gui/regular_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/regular_screen.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gui/start_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/start_screen.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gui/subscriberLogin.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/subscriberLogin.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gui/subscriber_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/subscriber_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/subscriber_customer.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/subscriber_customer.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -168,7 +168,15 @@
       <option name="project" value="LOCAL" />
       <updated>1781434314146</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="final version">
+      <option name="closed" value="true" />
+      <created>1781436843728</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1781436843728</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -176,6 +184,7 @@
     <MESSAGE value="............" />
     <MESSAGE value="guiiii" />
     <MESSAGE value="." />
-    <option name="LAST_COMMIT_MESSAGE" value="." />
+    <MESSAGE value="final version" />
+    <option name="LAST_COMMIT_MESSAGE" value="final version" />
   </component>
 </project>
