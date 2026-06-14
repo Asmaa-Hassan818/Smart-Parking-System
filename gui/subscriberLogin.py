@@ -227,7 +227,6 @@ class SubscriberLoginScreen(ctk.CTk):
         if hasattr(self, "particles"):
             self.particles.stop()
 
-    # ── Navigation ────────────────────────────────────────────────────────────
 
     def handle_login(self):
         from gui.subscriber_screen import SubscriberDashboard
@@ -258,8 +257,6 @@ class SubscriberLoginScreen(ctk.CTk):
         self.stop_all()
         self.destroy()
 
-        # Pass subscriber_manager so dashboard's Back button can
-        # return here with the same shared data intact
         app = SubscriberDashboard(
             subscriber=subscriber,
             parking_lot=lot,
@@ -268,7 +265,6 @@ class SubscriberLoginScreen(ctk.CTk):
         app.mainloop()
 
     def go_back(self):
-        """Back from login → Start Screen."""
         from gui.start_screen import StartScreen
 
         self.stop_all()

@@ -108,7 +108,7 @@ class SubscriberDashboard(ctk.CTk):
         self._bg_pil = None
         self.subscriber = subscriber
         self.parking_lot = parking_lot
-        self.subscriber_manager = subscriber_manager  # kept for future use
+        self.subscriber_manager = subscriber_manager
         self.on_back = on_back
         self.on_logout = on_logout
         self._bg_ctk = None
@@ -128,7 +128,6 @@ class SubscriberDashboard(ctk.CTk):
         self.particles = ParticleOverlay(self, bg=BG_COLOR)
         self.particles.place(x=0, y=0, relwidth=1, relheight=1)
 
-        # ── Header ────────────────────────────────────────────────────────────
         self.header = ctk.CTkFrame(self, fg_color="transparent")
         self.header.place(relx=0.5, rely=0.045, anchor="n")
 
@@ -152,7 +151,6 @@ class SubscriberDashboard(ctk.CTk):
                      font=("Segoe UI", 12),
                      text_color=TEXT_SECONDARY).pack(anchor="w")
 
-        # ── Top-right buttons ─────────────────────────────────────────────────
         self.top_btns = ctk.CTkFrame(self, fg_color="transparent")
         self.top_btns.place(relx=0.985, rely=0.045, anchor="ne")
 
@@ -162,7 +160,7 @@ class SubscriberDashboard(ctk.CTk):
             fg_color="transparent", hover_color="#1b2740",
             border_width=1.5, border_color=PANEL_BORDER,
             text_color=TEXT_SECONDARY, font=("Segoe UI", 12),
-            command=self.handle_back          # ← wired
+            command=self.handle_back
         )
         self.back_btn.pack(side="left", padx=(0, 8))
 
@@ -172,11 +170,10 @@ class SubscriberDashboard(ctk.CTk):
             fg_color="transparent", hover_color="#1b2740",
             border_width=1.5, border_color=PANEL_BORDER,
             text_color=TEXT_SECONDARY, font=("Segoe UI", 12),
-            command=self.handle_logout        # ← wired
+            command=self.handle_logout
         )
         self.logout_btn.pack(side="left")
 
-        # ── Content cards ─────────────────────────────────────────────────────
         self.content = ctk.CTkFrame(self, fg_color="transparent")
         self.content.place(relx=0.5, rely=0.58, anchor="center")
 
@@ -207,7 +204,6 @@ class SubscriberDashboard(ctk.CTk):
         self.after(50, self._fade_in)
         self._refresh_info_card()
 
-    # ── Info card ─────────────────────────────────────────────────────────────
 
     def _build_info_card(self):
         ctk.CTkLabel(self.info_card, text="Subscriber Information",
@@ -284,7 +280,6 @@ class SubscriberDashboard(ctk.CTk):
             self.badge.configure(text="★ ACTIVE MEMBER",
                                  fg_color=NEON_GREEN, text_color="#06241c")
 
-    # ── Form card ─────────────────────────────────────────────────────────────
 
     def _build_form(self):
         ctk.CTkLabel(self.form_card, text="Parking Actions",
@@ -361,7 +356,6 @@ class SubscriberDashboard(ctk.CTk):
         )
         self.exit_btn.pack(padx=24, pady=(12, 0))
 
-    # ── Ticket / activity panel ───────────────────────────────────────────────
 
     def _build_ticket_panel(self):
         self.ticket_title = ctk.CTkLabel(
@@ -410,7 +404,6 @@ class SubscriberDashboard(ctk.CTk):
         self.loading_bar.pack(padx=24, pady=(16, 0))
         self.loading_bar.pack_forget()
 
-    # ── Helpers ───────────────────────────────────────────────────────────────
 
     def _resize_bg(self, event):
         if event.widget is not self or self._bg_pil is None:
@@ -458,7 +451,6 @@ class SubscriberDashboard(ctk.CTk):
         if hasattr(self, "particles"):
             self.particles.stop()
 
-    # ── Action handlers ───────────────────────────────────────────────────────
 
     def handle_check_balance(self):
         balance = self.subscriber.check_balance()
@@ -580,7 +572,6 @@ class SubscriberDashboard(ctk.CTk):
             "Parking history tracking will be available in a future update.",
             NEON_CYAN)
 
-    # ── Navigation (Back / Logout) ────────────────────────────────────────────
 
     def handle_back(self):
         from gui.subscriberLogin import SubscriberLoginScreen

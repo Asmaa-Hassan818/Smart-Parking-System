@@ -219,7 +219,10 @@ class AdminLoginScreen(ctk.CTk):
 
     def _go_back(self):
         self._running = False
+        from gui.start_screen import StartScreen
+        app = StartScreen()
         self.destroy()
+        app.mainloop()
     def _set_msg(self, text: str, color: str):
         self.msg_label.configure(text=text, text_color=color)
 

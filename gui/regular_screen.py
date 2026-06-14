@@ -238,7 +238,6 @@ class RegularCustomerScreen(ctk.CTk):
         )
         self.ticket_subtitle.pack(pady=(0, 18), padx=24, anchor="w")
 
-        # status indicator dot + label
         self.status_row = ctk.CTkFrame(self.ticket_card, fg_color="transparent")
         self.status_row.pack(padx=24, anchor="w", pady=(0, 14))
 
@@ -254,7 +253,6 @@ class RegularCustomerScreen(ctk.CTk):
         )
         self.status_text.pack(side="left")
 
-        # info rows (ticket id / slot / duration / cost)
         self.info_frame = ctk.CTkFrame(self.ticket_card, fg_color="#0c1426",
                                         corner_radius=14)
         self.info_frame.pack(padx=24, pady=(0, 14), fill="x")
@@ -276,7 +274,7 @@ class RegularCustomerScreen(ctk.CTk):
         )
         self.loading_bar.set(0)
         self.loading_bar.pack(padx=24, pady=(16, 0))
-        self.loading_bar.pack_forget()  # hidden until used
+        self.loading_bar.pack_forget()
 
     def _info_row(self, label, value):
         row = ctk.CTkFrame(self.info_frame, fg_color="transparent")
@@ -426,7 +424,7 @@ class RegularCustomerScreen(ctk.CTk):
         dialog.configure(fg_color=BG_COLOR)
         dialog.attributes("-topmost", True)
         dialog.resizable(False, False)
-        dialog.grab_set()  # make it modal
+        dialog.grab_set()
 
         card = GlassCard(dialog, border_color=NEON_CYAN, width=320, height=190)
         card.pack(padx=18, pady=18)

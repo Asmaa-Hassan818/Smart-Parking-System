@@ -165,17 +165,10 @@ class ActionCard(ctk.CTkFrame):
 
 
 class StartScreen(ctk.CTk):
-    """
-    Parameters
-    ----------
-    parking_lot        : ParkingLot       – shared lot (required for all screens)
-    subscriber_manager : SubscriberManager – shared manager (required for subscriber flow)
-    """
 
     def __init__(self, parking_lot=None, subscriber_manager=None):
         super().__init__()
 
-        # Store shared state so it can be forwarded to child screens
         self.parking_lot = parking_lot
         self.subscriber_manager = subscriber_manager
 
